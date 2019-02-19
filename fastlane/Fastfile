@@ -35,12 +35,21 @@ platform :android do
     gradle(task: "clean assembleRelease")
     upload_to_play_store
   end
+  lane :playstore do
+    gradle(task: 'clean')
+    gradle(
+      task: 'assemble',
+      build_type: 'Release',
+      properties: {
+        "android.injected.signing.store.file" => "playstore-key.json",
+        "android.injected.signing.key.alias" => "key0",
+        "android.injected.signing.key.password" => "Key1!,./",
+      }
+
+    )
+      upload_to_play_store
+  end
+
+
 end
 
-lane :playstore do
-  gradle(
-    task: 'assemble',
-    build_type: 'Release'
-    #upload_to_play_store
-  )
-end
